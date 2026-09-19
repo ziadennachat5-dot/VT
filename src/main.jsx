@@ -10,8 +10,14 @@ if (import.meta.env.DEV) {
   });
 }
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Render with error handling
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  console.error('Root element not found');
+} else {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}
