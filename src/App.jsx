@@ -6,7 +6,7 @@ import Products from './pages/admin/Products';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Storefront />} />
         <Route path="/admin" element={<AdminLayout />}>
