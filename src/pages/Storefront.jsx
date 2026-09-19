@@ -33,10 +33,16 @@ export default function Storefront() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data, error } = await supabase
-        .from('products').select('*').eq('is_active', true).order('created_at', { ascending: true });
-      if (!error && data) setProducts(data);
-      setLoadingProducts(false);
+      try {
+        const { data, error } = await supabase
+          .from('products').select('*').eq('is_active', true).order('created_at', { ascending: true });
+        if (!error && data) setProducts(data);
+        else if (error) console.error('Error fetching products:', error);
+      } catch (err) {
+        console.error('Failed to fetch products:', err);
+      } finally {
+        setLoadingProducts(false);
+      }
     }
     fetchProducts();
   }, []);
