@@ -1,0 +1,93 @@
+/* Fonts: Playfair Display = editorial headline serif | Space Grotesk = UI labels | Inter = body | JetBrains Mono = data */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700;1,900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-v-black:    #111111;
+  --color-v-white:    #ffffff;
+  --color-v-offwhite: #FAFAF8;
+  --color-v-cream:    #F5F3EF;
+  --font-headline: "Playfair Display", Georgia, serif;
+  --font-display:  "Space Grotesk", sans-serif;
+  --font-sans:     "Inter", sans-serif;
+  --font-mono:     "JetBrains Mono", monospace;
+}
+
+@layer base {
+  body {
+    background-color: #FAFAF8;
+    color: #111111;
+    @apply font-sans antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  /* Barely-there grain for tactility */
+  body::after {
+    content: "";
+    @apply fixed inset-0 pointer-events-none z-[100];
+    opacity: 0.018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Base heading: Space Grotesk. Storefront editorial headings override with font-headline explicitly. */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .animate-marquee      { animation: marquee 28s linear infinite; }
+  .animate-marquee-slow { animation: marquee 48s linear infinite; }
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Slower, more editorial fade */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(1.6rem);
+    transition: opacity 900ms ease-out, transform 900ms ease-out;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .animate-pulse-once { animation: pulseOnce 0.35s ease-out; }
+  @keyframes pulseOnce {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+}
+
+@layer components {
+  .hairline-border   { border:        1px solid rgba(17,17,17,0.10); }
+  .hairline-border-b { border-bottom: 1px solid rgba(17,17,17,0.10); }
+  .hairline-border-t { border-top:    1px solid rgba(17,17,17,0.10); }
+  .hairline-border-l { border-left:   1px solid rgba(17,17,17,0.10); }
+  .hairline-border-r { border-right:  1px solid rgba(17,17,17,0.10); }
+
+  /* More substantial buttons: taller, more padding, refined tracking */
+  .btn-primary {
+    @apply inline-flex items-center justify-center
+           bg-[#111111] text-white
+           px-10 py-4
+           font-sans font-medium uppercase text-[11px] tracking-[0.2em]
+           transition-all duration-300
+           hover:bg-[#282828]
+           active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center
+           border border-[#111111] text-[#111111] bg-transparent
+           px-10 py-4
+           font-sans font-medium uppercase text-[11px] tracking-[0.2em]
+           transition-all duration-300
+           hover:bg-[#111111] hover:text-white
+           active:scale-[0.98];
+  }
+}
+
