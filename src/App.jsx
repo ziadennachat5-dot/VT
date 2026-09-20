@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Storefront from './pages/Storefront';
 import AdminLayout from './pages/admin/AdminLayout';
 import Orders from './pages/admin/Orders';
@@ -6,7 +6,7 @@ import Products from './pages/admin/Products';
 
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Storefront />} />
         <Route path="/admin" element={<AdminLayout />}>
@@ -14,6 +14,6 @@ export default function App() {
           <Route path="products" element={<Products />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
