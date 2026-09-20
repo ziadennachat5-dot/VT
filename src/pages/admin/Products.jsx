@@ -32,7 +32,7 @@ export default function Products() {
     const token = localStorage.getItem('vellune_admin_token');
     const { data, error } = await supabase.functions.invoke('admin-api', {
       body: { action: 'get_products' },
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'X-Admin-Password': token }
     });
     if (!error && data?.data) setProducts(data.data);
     setLoading(false);
@@ -98,7 +98,7 @@ export default function Products() {
           
           const { data, error } = await supabase.functions.invoke('admin-api', {
             body: { action: 'upload_image', payload: { fileName, fileType: imageFile.type, fileData: reader.result } },
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { 'X-Admin-Password': token }
           });
           
           if (error) throw error;
@@ -143,7 +143,7 @@ export default function Products() {
       const token = localStorage.getItem('vellune_admin_token');
       const { error } = await supabase.functions.invoke('admin-api', {
         body: { action: 'upsert_product', payload },
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 'X-Admin-Password': token }
       });
       if (error) throw error;
       
@@ -163,7 +163,7 @@ export default function Products() {
     const updatedProduct = { ...product, is_active: !product.is_active };
     const { error } = await supabase.functions.invoke('admin-api', {
       body: { action: 'upsert_product', payload: updatedProduct },
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'X-Admin-Password': token }
     });
     if (!error) {
       setProducts(products.map(p => p.id === product.id ? updatedProduct : p));
@@ -175,7 +175,7 @@ export default function Products() {
       const token = localStorage.getItem('vellune_admin_token');
       const { error } = await supabase.functions.invoke('admin-api', {
         body: { action: 'delete_product', payload: { id } },
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 'X-Admin-Password': token }
       });
       if (!error) {
         setProducts(products.filter(p => p.id !== id));

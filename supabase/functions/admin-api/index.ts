@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-password, X-Admin-Password',
 };
 
 serve(async (req) => {
@@ -12,8 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const authHeader = req.headers.get('Authorization');
-    const token = authHeader ? authHeader.replace('Bearer ', '').trim() : '';
+    const token = (req.headers.get('x-admin-password') || req.headers.get('X-Admin-Password') || '').trim();
     
     // Verify admin password
     const adminPassword = Deno.env.get('ADMIN_PASSWORD');

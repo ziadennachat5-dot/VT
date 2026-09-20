@@ -18,7 +18,7 @@ export default function Orders() {
     const token = localStorage.getItem('vellune_admin_token');
     const { data, error } = await supabase.functions.invoke('admin-api', {
       body: { action: 'get_orders' },
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'X-Admin-Password': token }
     });
     
     if (!error && data?.data) {
@@ -31,7 +31,7 @@ export default function Orders() {
     const token = localStorage.getItem('vellune_admin_token');
     const { data, error } = await supabase.functions.invoke('admin-api', {
       body: { action: 'update_order_status', payload: { id, status: newStatus } },
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'X-Admin-Password': token }
     });
     
     if (!error) {
