@@ -25,10 +25,11 @@ serve(async (req) => {
 
     const { action, payload } = await req.json();
     
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const rawUrl = (Deno.env.get('SUPABASE_URL') ?? '').trim();
+    const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+    const supabaseServiceKey = (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '').trim();
+
+    const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
 
     let result = null;
 
@@ -107,7 +108,8 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error?.message || error?.details || (typeof error === 'object' ? JSON.stringify(error) : String(error));
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400
     });
